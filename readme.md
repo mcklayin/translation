@@ -244,7 +244,22 @@ For example, say we have the following file in our resources/lang directory: en/
 ```
 
 ## Managing languages and translations in the Database
-
+### Config database source
+```php
+  config\translator.php
+ 'source' => env('TRANSLATION_SOURCE', 'database'),
+ 'available_locales' => ['en'], //put your locales in array
+/*
+* Create record into database if translation doesn't exists
+* For database source only!
+* Record text will be last key part
+* Example - trans('auth.text.hello') -> 'hello' will be in column text
+* Example - trans('auth.hello world') -> 'hello world' will be in column
+*/
+ 'record' => [
+    'create_record'     => env('TRANSLATION_CREATE_RECORD', 'false'),
+ ],
+```
 #### Example of translator_languages table
 
 		| id | locale | name    |
