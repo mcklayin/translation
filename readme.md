@@ -174,7 +174,7 @@ Example:
 When using either the database or mixed translation sources, you will need to first load your translations into the database. To do so, follow these steps:
 
 * Run the migrations detailed in the installation instructions.
-* Add your languages of choice to the database (see [Managing Database Languages](#managing-database-languages))
+* Add your languages of choice to the database (see [Managing Database Languages](#managing-languages-and-translations-in-the-database))
 * Load your language files into the database using the provided Artisan command:
 
 	` php artisan translator:load `
@@ -244,6 +244,13 @@ For example, say we have the following file in our resources/lang directory: en/
 ```
 
 ## Managing languages and translations in the Database
+
+### Example of translator_languages table
+
+		| id | locale | name    |
+		-------------------------
+		| 1  | en     | english |
+		| 2  | es     | spanish |
 
 The recommended way of managing both languages and translations is through the provided repositories. You may circumvent this by saving changes directly through the Language and Translation models, however validation is no longer executed automatically on model save and could lead to instability and errors.
 
