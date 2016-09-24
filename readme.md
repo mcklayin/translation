@@ -245,7 +245,7 @@ For example, say we have the following file in our resources/lang directory: en/
 
 ## Managing languages and translations in the Database
 
-### Example of translator_languages table
+#### Example of translator_languages table
 
 		| id | locale | name    |
 		-------------------------
