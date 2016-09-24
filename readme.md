@@ -261,7 +261,10 @@ For example, say we have the following file in our resources/lang directory: en/
  ],
 ```
 With enabled record.create_record you can use lazy translations.
-Example: ```php trans('auth.hello world') ``` -> 'hello world' will be shown and will be stored in db.
+Example: 
+```php 
+trans('auth.hello world')   -> 'hello world' will be shown and will be stored in db.
+```
 
 #### Example of translator_languages table
 
