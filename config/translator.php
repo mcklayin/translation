@@ -22,6 +22,18 @@ return [
     'available_locales' => [],
 
     /*
+     * Create record into database if translation doesn't exists
+     * For database source only!
+     * Record text will be last key part
+     * Example - trans('auth.text.hello') -> 'hello' will be in column text
+     * Example - trans('auth.hello world') -> 'hello world' will be in column
+     */
+    'record' => [
+        'create_record'     => env('TRANSLATION_CREATE_RECORD', 'false'),
+    ],
+
+
+    /*
     |--------------------------------------------------------------------------
     | Default Translation Cache
     |--------------------------------------------------------------------------

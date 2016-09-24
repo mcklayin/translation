@@ -30,6 +30,15 @@ class DatabaseLoader extends Loader implements LoaderInterface
     }
 
     /**
+     * Get repository instance
+     *
+     * @return TranslationRepository
+     */
+    public function getRepository()
+    {
+        return $this->translationRepository;
+    }
+    /**
      *  Load the messages strictly for the given locale.
      *
      *  @param  string  $locale

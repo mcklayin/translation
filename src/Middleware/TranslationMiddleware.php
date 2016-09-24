@@ -70,6 +70,7 @@ class TranslationMiddleware
             if ($request->hasSession() && $request->session()->get('waavi.translation.locale') !== $uriLocale) {
                 $request->session()->put('waavi.translation.locale', $uriLocale);
             }
+
             return $next($request);
         }
 

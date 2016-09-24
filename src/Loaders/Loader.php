@@ -36,13 +36,17 @@ abstract class Loader implements LoaderInterface
      */
     public function load($locale, $group, $namespace = null)
     {
-        if ($locale != $this->defaultLocale) {
+        if ($locale != $this->defaultLocale && !\Config::get('translator.record.create_record')) {
             return array_replace_recursive(
                 $this->loadSource($this->defaultLocale, $group, $namespace),
                 $this->loadSource($locale, $group, $namespace)
             );
         }
         return $this->loadSource($locale, $group, $namespace);
+    }
+
+    public function getLoaderType() {
+        return class_basename($this);
     }
 
     /**
