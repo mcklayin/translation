@@ -1,18 +1,20 @@
-<?php namespace Waavi\Translation\Test\Loaders;
+<?php
 
+namespace Waavi\Translation\Test\Loaders;
+
+use Mockery;
 use Waavi\Translation\Cache\SimpleRepository as Cache;
 use Waavi\Translation\Loaders\CacheLoader;
 use Waavi\Translation\Loaders\Loader;
 use Waavi\Translation\Test\TestCase;
-use \Mockery;
 
 class CacheLoaderTest extends TestCase
 {
     public function setUp()
     {
         parent::setUp();
-        $this->cache       = Mockery::mock(Cache::class);
-        $this->fallback    = Mockery::mock(Loader::class);
+        $this->cache = Mockery::mock(Cache::class);
+        $this->fallback = Mockery::mock(Loader::class);
         $this->cacheLoader = new CacheLoader('en', $this->cache, $this->fallback, 60, 'translation');
     }
 

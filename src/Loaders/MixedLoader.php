@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Loaders;
+<?php
+
+namespace Waavi\Translation\Loaders;
 
 use Illuminate\Translation\LoaderInterface;
 
@@ -6,18 +8,21 @@ class MixedLoader extends Loader implements LoaderInterface
 {
     /**
      *  The default locale.
+     *
      *  @var string
      */
     protected $defaultLocale;
 
     /**
      *  The file loader.
+     *
      *  @var \Waavi\Translation\Loaders\Loader
      */
     protected $primaryLoader;
 
     /**
      *  The database loader.
+     *
      *  @var \Waavi\Translation\Loaders\Loader
      */
     protected $secondaryLoader;
@@ -32,7 +37,7 @@ class MixedLoader extends Loader implements LoaderInterface
     public function __construct($defaultLocale, Loader $primaryLoader, Loader $secondaryLoader)
     {
         parent::__construct($defaultLocale);
-        $this->primaryLoader   = $primaryLoader;
+        $this->primaryLoader = $primaryLoader;
         $this->secondaryLoader = $secondaryLoader;
     }
 
@@ -42,6 +47,7 @@ class MixedLoader extends Loader implements LoaderInterface
      *  @param  string   $locale
      *  @param  string   $group
      *  @param  string   $namespace
+     *
      *  @return array
      */
     public function loadSource($locale, $group, $namespace = '*')
@@ -57,6 +63,7 @@ class MixedLoader extends Loader implements LoaderInterface
      *
      *  @param  string  $namespace
      *  @param  string  $hint
+     *
      *  @return void
      */
     public function addNamespace($namespace, $hint)

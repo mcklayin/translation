@@ -1,9 +1,11 @@
-<?php namespace Waavi\Translation\Test\Loaders;
+<?php
+
+namespace Waavi\Translation\Test\Loaders;
 
 use Illuminate\Translation\FileLoader as LaravelFileLoader;
+use Mockery;
 use Waavi\Translation\Loaders\FileLoader;
 use Waavi\Translation\Test\TestCase;
-use \Mockery;
 
 class LoadTest extends TestCase
 {

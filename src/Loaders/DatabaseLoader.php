@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Loaders;
+<?php
+
+namespace Waavi\Translation\Loaders;
 
 use Illuminate\Translation\LoaderInterface;
 use Waavi\Translation\Repositories\TranslationRepository;
@@ -7,12 +9,14 @@ class DatabaseLoader extends Loader implements LoaderInterface
 {
     /**
      *  The default locale.
+     *
      *  @var string
      */
     protected $defaultLocale;
 
     /**
      *  Translations repository.
+     *
      *  @var \Waavi\Translation\Repositories\TranslationRepository
      */
     protected $translationRepository;
@@ -30,7 +34,7 @@ class DatabaseLoader extends Loader implements LoaderInterface
     }
 
     /**
-     * Get repository instance
+     * Get repository instance.
      *
      * @return TranslationRepository
      */
@@ -38,12 +42,14 @@ class DatabaseLoader extends Loader implements LoaderInterface
     {
         return $this->translationRepository;
     }
+
     /**
      *  Load the messages strictly for the given locale.
      *
      *  @param  string  $locale
      *  @param  string  $group
      *  @param  string  $namespace
+     *
      *  @return array
      */
     public function loadSource($locale, $group, $namespace = '*')
@@ -56,6 +62,7 @@ class DatabaseLoader extends Loader implements LoaderInterface
      *
      *  @param  string  $namespace
      *  @param  string  $hint
+     *
      *  @return void
      */
     public function addNamespace($namespace, $hint)

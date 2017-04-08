@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Repositories;
+<?php
+
+namespace Waavi\Translation\Repositories;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\NamespacedItemResolver;
@@ -16,7 +18,7 @@ class TranslationRepository extends Repository
     protected $model;
 
     /**
-     *  Validator
+     *  Validator.
      *
      *  @var \Illuminate\Validation\Validator
      */
@@ -30,25 +32,28 @@ class TranslationRepository extends Repository
     protected $errors;
 
     /**
-     *  Constructor
+     *  Constructor.
+     *
      *  @param  \Waavi\Translation\Models\Translation   $model  Bade model for queries.
      *  @param  \Illuminate\Validation\Validator        $validator  Validator factory
+     *
      *  @return void
      */
     public function __construct(Translation $model, Application $app)
     {
-        $this->model         = $model;
-        $this->app           = $app;
+        $this->model = $model;
+        $this->app = $app;
         $this->defaultLocale = $app['config']->get('app.locale');
-        $this->database      = $app['db'];
+        $this->database = $app['db'];
     }
 
     /**
      *  Insert a new translation into the database.
-     *  If the attributes are not valid, a null response is given and the errors can be retrieved through validationErrors()
+     *  If the attributes are not valid, a null response is given and the errors can be retrieved through validationErrors().
      *
      *  @param  array   $attributes     Model attributes
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function create(array $attributes)
     {
@@ -60,7 +65,8 @@ class TranslationRepository extends Repository
      *  If the translation is locked, no update will be made.
      *
      *  @param  array   $attributes     Model attributes
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function update($id, $text)
     {
@@ -69,20 +75,22 @@ class TranslationRepository extends Repository
             return false;
         }
         $translation->text = $text;
-        $saved             = $translation->save();
+        $saved = $translation->save();
         if ($saved && $translation->locale === $this->defaultLocale) {
             $this->flagAsUnstable($translation->namespace, $translation->group, $translation->item);
         }
+
         return $saved;
     }
 
     /**
      *  Update and lock translation. Locked translations will not be ovewritten when loading translation files into the database.
      *  This will force and update if the translation is locked.
-     *  If the attributes are not valid, a null response is given and the errors can be retrieved through validationErrors()
+     *  If the attributes are not valid, a null response is given and the errors can be retrieved through validationErrors().
      *
      *  @param  array   $attributes     Model attributes
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function updateAndLock($id, $text)
     {
@@ -96,6 +104,7 @@ class TranslationRepository extends Repository
         if ($saved && $translation->locale === $this->defaultLocale) {
             $this->flagAsUnstable($translation->namespace, $translation->group, $translation->item);
         }
+
         return $saved;
     }
 
@@ -104,24 +113,27 @@ class TranslationRepository extends Repository
      *
      *  @param  string  $code
      *  @param  string  $text
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function updateDefaultByCode($code, $text)
     {
         list($namespace, $group, $item) = $this->parseCode($code);
-        $locale                         = $this->defaultLocale;
-        $translation                    = $this->model->whereLocale($locale)->whereNamespace($namespace)->whereGroup($group)->whereItem($item)->first();
+        $locale = $this->defaultLocale;
+        $translation = $this->model->whereLocale($locale)->whereNamespace($namespace)->whereGroup($group)->whereItem($item)->first();
         if (!$translation) {
             return $this->create(compact('locale', 'namespace', 'group', 'item', 'text'));
         }
+
         return $this->update($translation->id, $text);
     }
 
     /**
-     *  Delete a translation. If the translation is of the default language, delete all translations with the same namespace, group and item
+     *  Delete a translation. If the translation is of the default language, delete all translations with the same namespace, group and item.
      *
-     *  @param  integer $id
-     *  @return boolean
+     *  @param  int $id
+     *
+     *  @return bool
      */
     public function delete($id)
     {
@@ -138,10 +150,11 @@ class TranslationRepository extends Repository
     }
 
     /**
-     *  Delete all entries by code
+     *  Delete all entries by code.
      *
      *  @param  string  $code
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function deleteByCode($code)
     {
@@ -156,6 +169,7 @@ class TranslationRepository extends Repository
      *  @param  string  $locale
      *  @param  string  $group
      *  @param  string  $namespace
+     *
      *  @return void
      */
     public function loadArray(array $lines, $locale, $group, $namespace = '*')
@@ -174,7 +188,7 @@ class TranslationRepository extends Repository
                 // If the translation already exists, we update the text:
                 if ($translation && !$translation->isLocked()) {
                     $translation->text = $text;
-                    $saved             = $translation->save();
+                    $saved = $translation->save();
                     if ($saved && $translation->locale === $this->defaultLocale) {
                         $this->flagAsUnstable($namespace, $group, $item);
                     }
@@ -191,20 +205,23 @@ class TranslationRepository extends Repository
      *  Return a list of translations for the given language. If perPage is > 0 a paginated list is returned with perPage items per page.
      *
      *  @param  string $locale
+     *
      *  @return Translation
      */
     public function allByLocale($locale, $perPage = 0)
     {
         $translations = $this->model->where('locale', $locale);
+
         return $perPage ? $translations->paginate($perPage) : $translations->get();
     }
 
     /**
-     *  Return all items for a given locale, namespace and group
+     *  Return all items for a given locale, namespace and group.
      *
      *  @param  string $locale
      *  @param  string $namespace
      *  @param  string $group
+     *
      *  @return array
      */
     public function getItems($locale, $namespace, $group)
@@ -223,6 +240,7 @@ class TranslationRepository extends Repository
      *  @param  string $locale
      *  @param  string $namespace
      *  @param  string $group
+     *
      *  @return array
      */
     public function loadSource($locale, $namespace, $group)
@@ -244,32 +262,35 @@ class TranslationRepository extends Repository
      *
      *  @param  string  $locale
      *  @param  int     $perPage    Number of elements per page. 0 if all are wanted.
+     *
      *  @return Translation
      */
     public function pendingReview($locale, $perPage = 0)
     {
         $underReview = $this->model->whereLocale($locale)->whereUnstable(1);
+
         return $perPage ? $underReview->paginate($perPage) : $underReview->get();
     }
 
     /**
-     *  Search for entries given a partial code and a locale
+     *  Search for entries given a partial code and a locale.
      *
      *  @param  string  $locale
      *  @param  string  $partialCode
-     *  @param  integer $perPage        0 if all, > 0 if paginated list with that number of elements per page.
+     *  @param  int $perPage        0 if all, > 0 if paginated list with that number of elements per page.
+     *
      *  @return Translation
      */
     public function search($locale, $partialCode, $perPage = 0)
     {
         // Get the namespace, if any:
         $colonIndex = stripos($partialCode, '::');
-        $query      = $this->model->whereLocale($locale);
+        $query = $this->model->whereLocale($locale);
         if ($colonIndex === 0) {
             $query = $query->where('namespace', '!=', '*');
         } elseif ($colonIndex > 0) {
-            $namespace   = substr($partialCode, 0, $colonIndex);
-            $query       = $query->where('namespace', 'like', "%{$namespace}%");
+            $namespace = substr($partialCode, 0, $colonIndex);
+            $query = $query->where('namespace', 'like', "%{$namespace}%");
             $partialCode = substr($partialCode, $colonIndex + 2);
         }
 
@@ -290,16 +311,16 @@ class TranslationRepository extends Repository
      *  List all entries in the default locale that do not exist for the target locale.
      *
      *  @param      string    $target     Language to translate to.
-     *  @param      integer   $perPage    If greater than zero, return a paginated list with $perPage items per page.
+     *  @param      int   $perPage    If greater than zero, return a paginated list with $perPage items per page.
      *  @param      string    $text       [optional] Show only entries with the given text in them in the reference language.
+     *
      *  @return     Collection
      */
     public function untranslated($locale, $perPage = 0, $text = null)
     {
-
         $table = $this->model->getTable();
-        $ids   = $this->database->table($table)
-            ->select($table . '.id')
+        $ids = $this->database->table($table)
+            ->select($table.'.id')
             ->whereRaw("$table.locale = '$this->defaultLocale'")
             ->whereNotExists(function ($query) use ($table, $locale) {
                 $query
@@ -315,6 +336,7 @@ class TranslationRepository extends Repository
         $ids = array_pluck($ids, 'id');
 
         $untranslated = $text ? $this->model->whereIn('id', $ids)->where('text', 'like', "%$text%") : $this->model->whereIn('id', $ids);
+
         return $perPage ? $untranslated->paginate($perPage) : $untranslated->get();
     }
 
@@ -322,13 +344,14 @@ class TranslationRepository extends Repository
      *  Find a random entry that is present in the default locale but not in the given one.
      *
      *  @param  string $locale       Locale to translate to.
+     *
      *  @return Translation
      */
     public function randomUntranslated($locale)
     {
         $table = $this->model->getTable();
-        $ids   = $this->database->table($table)
-            ->select($table . '.id')
+        $ids = $this->database->table($table)
+            ->select($table.'.id')
             ->whereRaw("$table.locale = '$this->defaultLocale'")
             ->whereNotExists(function ($query) use ($table, $locale) {
                 $query
@@ -340,31 +363,35 @@ class TranslationRepository extends Repository
                     ->whereRaw("`e`.`item` = `$table`.`item`");
             })
             ->get();
+
         return $ids && $ids->count() > 0 ? $ids->pluck('id')->random() : null;
     }
 
     /**
-     *  Find a translation per namespace, group and item values
+     *  Find a translation per namespace, group and item values.
      *
      *  @param  string  $locale
      *  @param  string  $namespace
      *  @param  string  $group
      *  @param  string  $item
+     *
      *  @return Translation
      */
     public function findByLangCode($locale, $code)
     {
         list($namespace, $group, $item) = $this->parseCode($code);
+
         return $this->model->whereLocale($locale)->whereNamespace($namespace)->whereGroup($group)->whereItem($item)->first();
     }
 
     /**
-     *  Find a translation per namespace, group and item values
+     *  Find a translation per namespace, group and item values.
      *
      *  @param  string  $locale
      *  @param  string  $namespace
      *  @param  string  $group
      *  @param  string  $item
+     *
      *  @return Translation
      */
     public function findByCode($locale, $namespace, $group, $item)
@@ -378,6 +405,7 @@ class TranslationRepository extends Repository
      *  @param  string  $text
      *  @param  string  $textLocale
      *  @param  string  $targetLocale
+     *
      *  @return array
      */
     public function translateText($text, $textLocale, $targetLocale)
@@ -386,7 +414,7 @@ class TranslationRepository extends Repository
 
         $results = $this->model
             ->newQuery()
-            ->select($table . '.text')
+            ->select($table.'.text')
             ->from($table)
             ->leftJoin("{$table} as e", function ($join) use ($table, $text, $textLocale) {
                 $join->on('e.namespace', '=', "{$table}.namespace")
@@ -409,7 +437,8 @@ class TranslationRepository extends Repository
      *  This is used when an entry for the default locale is updated.
      *
      *  @param Translation $entry
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function flagAsUnstable($namespace, $group, $item)
     {
@@ -419,8 +448,9 @@ class TranslationRepository extends Repository
     /**
      *  Flag the entry with the given id as reviewed.
      *
-     *  @param  integer $id
-     *  @return boolean
+     *  @param  int $id
+     *
+     *  @return bool
      */
     public function flagAsReviewed($id)
     {
@@ -428,18 +458,19 @@ class TranslationRepository extends Repository
     }
 
     /**
-     *  Validate the given attributes
+     *  Validate the given attributes.
      *
      *  @param  array    $attributes
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function validate(array $attributes)
     {
-        $table     = $this->model->getTable();
-        $locale    = array_get($attributes, 'locale', '');
+        $table = $this->model->getTable();
+        $locale = array_get($attributes, 'locale', '');
         $namespace = array_get($attributes, 'namespace', '');
-        $group     = array_get($attributes, 'group', '');
-        $rules     = [
+        $group = array_get($attributes, 'group', '');
+        $rules = [
             'locale'    => 'required',
             'namespace' => 'required',
             'group'     => 'required',
@@ -449,8 +480,10 @@ class TranslationRepository extends Repository
         $validator = $this->app['validator']->make($attributes, $rules);
         if ($validator->fails()) {
             $this->errors = $validator->errors();
+
             return false;
         }
+
         return true;
     }
 
@@ -465,14 +498,15 @@ class TranslationRepository extends Repository
     }
 
     /**
-     *  Parse a translation code into its components
+     *  Parse a translation code into its components.
      *
      *  @param  string $code
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function parseCode($code)
     {
-        $segments = (new NamespacedItemResolver)->parseKey($code);
+        $segments = (new NamespacedItemResolver())->parseKey($code);
 
         if (is_null($segments[0])) {
             $segments[0] = '*';

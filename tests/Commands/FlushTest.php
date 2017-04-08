@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Test\Commands;
+<?php
+
+namespace Waavi\Translation\Test\Commands;
 
 use Mockery;
 use Waavi\Translation\Test\TestCase;

@@ -4,7 +4,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class IncreaseLocaleLength extends Migration
 {
-
     /**
      * Run the migrations.
      *
@@ -29,5 +28,4 @@ class IncreaseLocaleLength extends Migration
     {
         //
     }
-
 }

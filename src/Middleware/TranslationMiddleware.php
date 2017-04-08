@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Middleware;
+<?php
+
+namespace Waavi\Translation\Middleware;
 
 use Closure;
 use Illuminate\Config\Repository as Config;
@@ -10,7 +12,7 @@ use Waavi\Translation\UriLocalizer;
 class TranslationMiddleware
 {
     /**
-     *  Constructor
+     *  Constructor.
      *
      *  @param  Waavi\Translation\UriLocalizer                      $uriLocalizer
      *  @param  Waavi\Translation\Repositories\LanguageRepository   $languageRepository
@@ -20,18 +22,19 @@ class TranslationMiddleware
      */
     public function __construct(UriLocalizer $uriLocalizer, LanguageRepository $languageRepository, Config $config, ViewFactory $viewFactory, Application $app)
     {
-        $this->uriLocalizer       = $uriLocalizer;
+        $this->uriLocalizer = $uriLocalizer;
         $this->languageRepository = $languageRepository;
-        $this->config             = $config;
-        $this->viewFactory        = $viewFactory;
-        $this->app                = $app;
+        $this->config = $config;
+        $this->viewFactory = $viewFactory;
+        $this->app = $app;
     }
 
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -41,15 +44,15 @@ class TranslationMiddleware
             return $next($request);
         }
 
-        $currentUrl    = $request->getUri();
-        $uriLocale     = $this->uriLocalizer->getLocaleFromUrl($currentUrl);
+        $currentUrl = $request->getUri();
+        $uriLocale = $this->uriLocalizer->getLocaleFromUrl($currentUrl);
         $defaultLocale = $this->config->get('app.locale');
 
         // If a locale was set in the url:
         if ($uriLocale) {
-            $currentLanguage     = $this->languageRepository->findByLocale($uriLocale);
+            $currentLanguage = $this->languageRepository->findByLocale($uriLocale);
             $selectableLanguages = $this->languageRepository->allExcept($uriLocale);
-            $altLocalizedUrls    = [];
+            $altLocalizedUrls = [];
             foreach ($selectableLanguages as $lang) {
                 $altLocalizedUrls[] = [
                     'locale' => $lang->locale,

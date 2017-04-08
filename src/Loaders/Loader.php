@@ -1,9 +1,8 @@
-<?php namespace Waavi\Translation\Loaders;
+<?php
 
-use Illuminate\Config\Repository as Config;
+namespace Waavi\Translation\Loaders;
+
 use Illuminate\Translation\LoaderInterface;
-use Waavi\Translation\Repositories\LanguageRepository;
-use Waavi\Translation\Repositories\TranslationRepository;
 
 abstract class Loader implements LoaderInterface
 {
@@ -29,9 +28,10 @@ abstract class Loader implements LoaderInterface
     /**
      * Load the messages for the given locale.
      *
-     * @param  string  $locale
-     * @param  string  $group
-     * @param  string  $namespace
+     * @param string $locale
+     * @param string $group
+     * @param string $namespace
+     *
      * @return array
      */
     public function load($locale, $group, $namespace = null)
@@ -42,19 +42,22 @@ abstract class Loader implements LoaderInterface
                 $this->loadSource($locale, $group, $namespace)
             );
         }
+
         return $this->loadSource($locale, $group, $namespace);
     }
 
-    public function getLoaderType() {
+    public function getLoaderType()
+    {
         return class_basename($this);
     }
 
     /**
-     * Load the messages for the given locale from the loader source (cache, file, database, etc...)
+     * Load the messages for the given locale from the loader source (cache, file, database, etc...).
      *
-     * @param  string  $locale
-     * @param  string  $group
-     * @param  string  $namespace
+     * @param string $locale
+     * @param string $group
+     * @param string $namespace
+     *
      * @return array
      */
     abstract public function loadSource($locale, $group, $namespace = null);
@@ -62,8 +65,9 @@ abstract class Loader implements LoaderInterface
     /**
      * Add a new namespace to the loader.
      *
-     * @param  string  $namespace
-     * @param  string  $hint
+     * @param string $namespace
+     * @param string $hint
+     *
      * @return void
      */
     abstract public function addNamespace($namespace, $hint);

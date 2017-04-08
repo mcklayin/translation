@@ -1,9 +1,11 @@
-<?php namespace Waavi\Translation\Test\Loaders;
+<?php
 
+namespace Waavi\Translation\Test\Loaders;
+
+use Mockery;
 use Waavi\Translation\Loaders\DatabaseLoader;
 use Waavi\Translation\Repositories\TranslationRepository;
 use Waavi\Translation\Test\TestCase;
-use \Mockery;
 
 class DatabaseLoaderTest extends TestCase
 {
@@ -11,7 +13,7 @@ class DatabaseLoaderTest extends TestCase
     {
         parent::setUp();
         $this->translationRepository = \App::make(TranslationRepository::class);
-        $this->loader                = new DatabaseLoader('es', $this->translationRepository);
+        $this->loader = new DatabaseLoader('es', $this->translationRepository);
     }
 
     public function tearDown()

@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Commands;
+<?php
+
+namespace Waavi\Translation\Commands;
 
 use Illuminate\Console\Command;
 use Waavi\Translation\Cache\CacheRepositoryInterface as CacheRepository;
@@ -17,10 +19,10 @@ class CacheFlushCommand extends Command
      *
      * @var string
      */
-    protected $description = "Flush the translation cache.";
+    protected $description = 'Flush the translation cache.';
 
     /**
-     *  Create the cache flushed command
+     *  Create the cache flushed command.
      *
      *  @param  \Waavi\Lang\Providers\LanguageProvider        $languageRepository
      *  @param  \Waavi\Lang\Providers\LanguageEntryProvider   $translationRepository
@@ -30,7 +32,7 @@ class CacheFlushCommand extends Command
     {
         parent::__construct();
         $this->cacheRepository = $cacheRepository;
-        $this->cacheEnabled    = $cacheEnabled;
+        $this->cacheEnabled = $cacheEnabled;
     }
 
     /**

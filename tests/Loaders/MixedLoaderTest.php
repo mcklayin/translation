@@ -1,18 +1,20 @@
-<?php namespace Waavi\Translation\Test\Loaders;
+<?php
 
+namespace Waavi\Translation\Test\Loaders;
+
+use Mockery;
 use Waavi\Translation\Loaders\DatabaseLoader;
 use Waavi\Translation\Loaders\FileLoader;
 use Waavi\Translation\Loaders\MixedLoader;
 use Waavi\Translation\Test\TestCase;
-use \Mockery;
 
 class MixedLoaderTest extends TestCase
 {
     public function setUp()
     {
         parent::setUp();
-        $this->fileLoader  = Mockery::mock(FileLoader::class);
-        $this->dbLoader    = Mockery::mock(DatabaseLoader::class);
+        $this->fileLoader = Mockery::mock(FileLoader::class);
+        $this->dbLoader = Mockery::mock(DatabaseLoader::class);
         $this->mixedLoader = new MixedLoader('en', $this->fileLoader, $this->dbLoader);
     }
 

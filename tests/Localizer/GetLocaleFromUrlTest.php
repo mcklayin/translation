@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Test\Localizer;
+<?php
+
+namespace Waavi\Translation\Test\Localizer;
 
 use UriLocalizer;
 use Waavi\Translation\Test\TestCase;

@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Loaders;
+<?php
+
+namespace Waavi\Translation\Loaders;
 
 use Illuminate\Translation\FileLoader as LaravelFileLoader;
 use Illuminate\Translation\LoaderInterface;
@@ -24,6 +26,7 @@ class FileLoader extends Loader implements LoaderInterface
      *
      *  @param  string                              $defaultLocale
      *  @param  \Illuminate\Translation\FileLoader  $laravelFileLoader
+     *
      *  @return void
      */
     public function __construct($defaultLocale, LaravelFileLoader $laravelFileLoader)
@@ -35,9 +38,10 @@ class FileLoader extends Loader implements LoaderInterface
     /**
      * Load the messages strictly for the given locale without checking the cache or in case of a cache miss.
      *
-     * @param  string  $locale
-     * @param  string  $group
-     * @param  string  $namespace
+     * @param string $locale
+     * @param string $group
+     * @param string $namespace
+     *
      * @return array
      */
     public function loadSource($locale, $group, $namespace = '*')
@@ -48,8 +52,9 @@ class FileLoader extends Loader implements LoaderInterface
     /**
      * Add a new namespace to the loader.
      *
-     * @param  string  $namespace
-     * @param  string  $hint
+     * @param string $namespace
+     * @param string $hint
+     *
      * @return void
      */
     public function addNamespace($namespace, $hint)

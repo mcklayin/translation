@@ -32,7 +32,6 @@ return [
         'create_record'     => env('TRANSLATION_CREATE_RECORD', 'false'),
     ],
 
-
     /*
     |--------------------------------------------------------------------------
     | Default Translation Cache

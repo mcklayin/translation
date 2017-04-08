@@ -1,18 +1,19 @@
-<?php namespace Waavi\Translation;
+<?php
+
+namespace Waavi\Translation;
 
 use Illuminate\Support\Arr;
 
-class Translator extends \Illuminate\Translation\Translator {
-    
-
+class Translator extends \Illuminate\Translation\Translator
+{
     protected function getLine($namespace, $group, $locale, $item, array $replace)
     {
         $key = $item;
-        if(\Config::get('translator.record.create_record')) {
+        if (\Config::get('translator.record.create_record')) {
             if (str_contains($item, '.')) {
                 $key = stristr($item, '.', true);
             } else {
-                $key = strtok($item, " ");
+                $key = strtok($item, ' ');
             }
         }
 
@@ -24,22 +25,21 @@ class Translator extends \Illuminate\Translation\Translator {
             return $line;
         }
 
-       if (!$line  && \Config::get('translator.record.create_record')) {
-           if ($this->getLoader()->getLoaderType() == 'DatabaseLoader') {
-               $exploded = explode('.', $item);
-               $line  = end($exploded);
+        if (!$line && \Config::get('translator.record.create_record')) {
+            if ($this->getLoader()->getLoaderType() == 'DatabaseLoader') {
+                $exploded = explode('.', $item);
+                $line = end($exploded);
 
-               $this->getLoader()->getRepository()->create([
-                   'locale' => $locale,
-                   'group' => $group,
+                $this->getLoader()->getRepository()->create([
+                   'locale'    => $locale,
+                   'group'     => $group,
                    'namespace' => $namespace,
-                   'item' => $key,
-                   'text' => $line
+                   'item'      => $key,
+                   'text'      => $line,
                ]);
 
-               return $line;
-           }
-
-       }
+                return $line;
+            }
+        }
     }
 }
