@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Test\Traits;
+<?php
+
+namespace Waavi\Translation\Test\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Mockery;
@@ -9,7 +11,6 @@ use Waavi\Translation\Traits\Translatable;
 
 class TranslatableTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -22,7 +23,7 @@ class TranslatableTest extends TestCase
             $table->string('text_translation')->nullable();
             $table->timestamps();
         });
-        $this->languageRepository    = \App::make(LanguageRepository::class);
+        $this->languageRepository = \App::make(LanguageRepository::class);
         $this->translationRepository = \App::make(TranslationRepository::class);
     }
 
@@ -31,10 +32,10 @@ class TranslatableTest extends TestCase
      */
     public function it_saves_translations()
     {
-        $dummy        = new Dummy;
+        $dummy = new Dummy();
         $dummy->title = 'Dummy title';
-        $dummy->text  = 'Dummy text';
-        $saved        = $dummy->save() ? true : false;
+        $dummy->text = 'Dummy text';
+        $saved = $dummy->save() ? true : false;
         $this->assertTrue($saved);
         $this->assertEquals(1, Dummy::count());
         $this->assertEquals('slug', $dummy->slug);
@@ -58,12 +59,14 @@ class TranslatableTest extends TestCase
     public function it_flushes_cache()
     {
         $cacheMock = Mockery::mock(\Waavi\Translation\Cache\SimpleRepository::class);
-        $this->app->bind('translation.cache.repository', function ($app) use ($cacheMock) {return $cacheMock;});
+        $this->app->bind('translation.cache.repository', function ($app) use ($cacheMock) {
+            return $cacheMock;
+        });
         $cacheMock->shouldReceive('flush')->with('en', 'translatable', '*');
-        $dummy        = new Dummy;
+        $dummy = new Dummy();
         $dummy->title = 'Dummy title';
-        $dummy->text  = 'Dummy text';
-        $saved        = $dummy->save() ? true : false;
+        $dummy->text = 'Dummy text';
+        $saved = $dummy->save() ? true : false;
         $this->assertTrue($saved);
     }
 }
@@ -79,6 +82,6 @@ class Dummy extends Model
     public function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
-        $this->attributes['slug']  = 'slug';
+        $this->attributes['slug'] = 'slug';
     }
 }

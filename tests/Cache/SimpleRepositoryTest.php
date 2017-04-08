@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Test\Cache;
+<?php
+
+namespace Waavi\Translation\Test\Cache;
 
 use Illuminate\Cache\ArrayStore;
 use Waavi\Translation\Cache\SimpleRepository;
@@ -10,7 +12,7 @@ class SimpleRepositoryTest extends TestCase
     {
         // During the parent's setup, both a 'es' 'Spanish' and 'en' 'English' languages are inserted into the database.
         parent::setUp();
-        $this->repo = new SimpleRepository(new ArrayStore, 'translation');
+        $this->repo = new SimpleRepository(new ArrayStore(), 'translation');
     }
 
     /**

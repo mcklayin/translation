@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Test\Cache;
+<?php
+
+namespace Waavi\Translation\Test\Cache;
 
 use Waavi\Translation\Test\TestCase;
 

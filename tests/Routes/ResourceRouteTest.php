@@ -3,10 +3,10 @@
 namespace Waavi\Test\Routes;
 
 use Illuminate\Routing\Router;
+use Mockery;
 use Waavi\Translation\Repositories\LanguageRepository;
 use Waavi\Translation\Routes\ResourceRegistrar;
 use Waavi\Translation\Test\TestCase;
-use \Mockery;
 
 class ResourceRouteTest extends TestCase
 {
@@ -15,16 +15,17 @@ class ResourceRouteTest extends TestCase
         // During the parent's setup, both a 'es' 'Spanish' and 'en' 'English' languages are inserted into the database.
         parent::setUp();
         $this->languageRepository = Mockery::mock(LanguageRepository::class);
-        $this->router             = Mockery::mock(Router::class);
-        $this->registrar          = new ResourceRegistrar($this->router, $this->languageRepository);
+        $this->router = Mockery::mock(Router::class);
+        $this->registrar = new ResourceRegistrar($this->router, $this->languageRepository);
     }
 
     protected function getMethod()
     {
         // Set the method to public for testing
-        $class  = new \ReflectionClass(ResourceRegistrar::class);
+        $class = new \ReflectionClass(ResourceRegistrar::class);
         $method = $class->getMethod('getGroupResourceName');
         $method->setAccessible(true);
+
         return $method;
     }
 

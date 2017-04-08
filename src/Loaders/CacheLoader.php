@@ -1,4 +1,6 @@
-<?php namespace Waavi\Translation\Loaders;
+<?php
+
+namespace Waavi\Translation\Loaders;
 
 use Illuminate\Translation\LoaderInterface;
 use Waavi\Translation\Cache\CacheRepositoryInterface as Cache;
@@ -39,13 +41,13 @@ class CacheLoader extends Loader implements LoaderInterface
      *  @param  string                                                      $defaultLocale
      *  @param  \Waavi\Translation\Contracts\CacheRepositoryInterface       $cache              Cache repository.
      *  @param  \Waavi\Translation\Loaders\Loader                           $fallback           Translation loader to use on cache miss.
-     *  @param  integer                                                     $cacheTimeout       In minutes.
+     *  @param  int                                                     $cacheTimeout       In minutes.
      */
     public function __construct($defaultLocale, Cache $cache, Loader $fallback, $cacheTimeout)
     {
         parent::__construct($defaultLocale);
-        $this->cache        = $cache;
-        $this->fallback     = $fallback;
+        $this->cache = $cache;
+        $this->fallback = $fallback;
         $this->cacheTimeout = $cacheTimeout;
     }
 
@@ -55,6 +57,7 @@ class CacheLoader extends Loader implements LoaderInterface
      *  @param  string  $locale
      *  @param  string  $group
      *  @param  string  $namespace
+     *
      *  @return array
      */
     public function loadSource($locale, $group, $namespace = '*')
@@ -64,6 +67,7 @@ class CacheLoader extends Loader implements LoaderInterface
         } else {
             $source = $this->fallback->load($locale, $group, $namespace);
             $this->cache->put($locale, $group, $namespace, $source, $this->cacheTimeout);
+
             return $source;
         }
     }
@@ -73,6 +77,7 @@ class CacheLoader extends Loader implements LoaderInterface
      *
      *  @param  string  $namespace
      *  @param  string  $hint
+     *
      *  @return void
      */
     public function addNamespace($namespace, $hint)

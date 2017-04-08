@@ -58,7 +58,7 @@ abstract class TestCase extends Orchestra
      */
     protected function setUpDatabase($app)
     {
-        $this->artisan('migrate', ['--realpath' => realpath(__DIR__ . '/../database/migrations')]);
+        $this->artisan('migrate', ['--realpath' => realpath(__DIR__.'/../database/migrations')]);
         // Seed the spanish and english languages
         $languageRepository = \App::make(LanguageRepository::class);
         $languageRepository->create(['locale' => 'en', 'name' => 'English']);

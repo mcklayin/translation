@@ -1,6 +1,7 @@
-<?php namespace Waavi\Translation\Traits;
+<?php
 
-use Illuminate\Support\Facades\Lang;
+namespace Waavi\Translation\Traits;
+
 use Illuminate\Support\Str;
 
 trait Translatable
@@ -12,13 +13,14 @@ trait Translatable
      */
     public static function bootTranslatable()
     {
-        static::observe(new TranslatableObserver);
+        static::observe(new TranslatableObserver());
     }
 
     /**
      *  Hijack parent's getAttribute to get the translation of the given field instead of its value.
      *
      *  @param  string  $key  Attribute name
+     *
      *  @return mixed
      */
     public function getAttribute($attribute)
@@ -26,6 +28,7 @@ trait Translatable
         // Return the raw value of a translatable attribute if requested
         if ($this->rawValueRequested($attribute)) {
             $rawAttribute = snake_case(str_replace('raw', '', $attribute));
+
             return $this->attributes[$rawAttribute];
         }
         // Return the translation for the given attribute if available
@@ -41,6 +44,7 @@ trait Translatable
      *
      *  @param  string  $attribute    Attribute name
      *  @param  string  $value  Text value in default locale.
+     *
      *  @return void
      */
     public function setAttribute($attribute, $value)
@@ -48,19 +52,21 @@ trait Translatable
         if ($this->isTranslatable($attribute) && !empty($value)) {
             // If a translation code has not yet been set, generate one:
             if (!$this->translationCodeFor($attribute)) {
-                $reflected                                    = new \ReflectionClass($this);
-                $group                                        = 'translatable';
-                $item                                         = strtolower($reflected->getShortName()) . '.' . strtolower($attribute) . '.' . Str::quickRandom();
+                $reflected = new \ReflectionClass($this);
+                $group = 'translatable';
+                $item = strtolower($reflected->getShortName()).'.'.strtolower($attribute).'.'.Str::quickRandom();
                 $this->attributes["{$attribute}_translation"] = "$group.$item";
             }
         }
+
         return parent::setAttribute($attribute, $value);
     }
 
     /**
-     *  Get the set translation code for the give attribute
+     *  Get the set translation code for the give attribute.
      *
      *  @param string $attribute
+     *
      *  @return string
      */
     public function translationCodeFor($attribute)
@@ -72,14 +78,17 @@ trait Translatable
      *  Check if the attribute being queried is the raw value of a translatable attribute.
      *
      *  @param  string $attribute
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function rawValueRequested($attribute)
     {
         if (strrpos($attribute, 'raw') === 0) {
             $rawAttribute = snake_case(str_replace('raw', '', $attribute));
+
             return $this->isTranslatable($rawAttribute);
         }
+
         return false;
     }
 
@@ -93,19 +102,21 @@ trait Translatable
      *  If a translation does not exist yet, one will be created.
      *
      *  @param  string $attribute
+     *
      *  @return LanguageEntry
      */
     public function translate($attribute)
     {
         $translationCode = array_get($this->attributes, "{$attribute}_translation", false);
-        $translation     = $translationCode ? \App::make('translator')->get($translationCode) : false;
+        $translation = $translationCode ? \App::make('translator')->get($translationCode) : false;
+
         return $translation ?: parent::getAttribute($attribute);
     }
 
     /**
      *  Check if an attribute is translatable.
      *
-     *  @return boolean
+     *  @return bool
      */
     public function isTranslatable($attribute)
     {
@@ -116,7 +127,8 @@ trait Translatable
      *  Check if a translation exists for the given attribute.
      *
      *  @param  string $attribute
-     *  @return boolean
+     *
+     *  @return bool
      */
     public function isTranslated($attribute)
     {
@@ -124,7 +136,7 @@ trait Translatable
     }
 
     /**
-     *  Return the translatable attributes array
+     *  Return the translatable attributes array.
      *
      *  @return  array
      */

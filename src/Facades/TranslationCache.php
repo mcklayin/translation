@@ -1,6 +1,8 @@
-<?php namespace Waavi\Translation\Facades;
+<?php
 
-use \Illuminate\Support\Facades\Facade;
+namespace Waavi\Translation\Facades;
+
+use Illuminate\Support\Facades\Facade;
 
 class TranslationCache extends Facade
 {
